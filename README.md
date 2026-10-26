@@ -7,47 +7,34 @@
 ### We can't see you.
 
 **A private AI on Robinhood Chain where paying and asking never meet.**
-Your wallet buys blind-signed tickets. Each ticket asks one question of a model inside a hardware enclave.
-The server can check that a ticket was paid for. It cannot tell which wallet paid.
 
 [![Chain](https://img.shields.io/badge/Robinhood%20Chain-4663-1E3A2F)](https://blindwoods.app/docs)
-[![Ticker](https://img.shields.io/badge/ticker-%24BLIND-E8A33D?labelColor=1E3A2F)](#token-at-a-glance)
-[![Ticket](https://img.shields.io/badge/ticket-%240.01-F3F1EA?labelColor=1E3A2F)](#highlights)
-[![Contracts](https://img.shields.io/badge/contracts-ownerless-F3F1EA?labelColor=1E3A2F)](documents/blindwoods-kernel)
-[![Third parties](https://img.shields.io/badge/third--party%20scripts-0-1E3A2F)](documents/blindwoods-cabin)
+[![Ticker](https://img.shields.io/badge/ticker-%24BLIND-E8A33D?labelColor=1E3A2F)](#holder-allowance)
+[![Ticket](https://img.shields.io/badge/ticket-%240.01-F3F1EA?labelColor=1E3A2F)](#tickets)
+[![Contracts](https://img.shields.io/badge/contracts-ownerless-F3F1EA?labelColor=1E3A2F)](#money-nobody-can-redirect)
+[![Third parties](https://img.shields.io/badge/third--party%20scripts-0-1E3A2F)](#nothing-watches-the-chat)
 
-[Website](https://blindwoods.app) · [App](https://app.blindwoods.app) · [Docs](https://blindwoods.app/docs) · [X @blindwoodsRH](https://x.com/blindwoodsRH) · [GitHub](https://github.com/blindwoodsRH)
+[Website](https://blindwoods.app) · [App](https://app.blindwoods.app) · [Docs](https://blindwoods.app/docs) · [X @blindwoodsRH](https://x.com/blindwoodsRH)
 
 </div>
 
 ---
 
-## What is Blindwoods
+## About
 
-Every private AI on a public chain asks you to connect a wallet, and that wallet becomes your account: a public portfolio filed next to every question you ask. Blindwoods splits the two with blind signatures. Your wallet pays at one door; a ticket asks at another; nothing the service runs can join them. $BLIND holders receive fresh tickets every day, paid for by a fixed share of trading fees.
+Every private AI on a public chain asks you to connect a wallet. That wallet becomes your account, and on a public chain your account is a public portfolio: every coin you hold, every trade you made. Every question you ask gets filed next to it.
 
-- **Pay with a wallet, ask with a ticket.** Blind RSA (RFC 9474) as Privacy Pass tokens: the issuer never sees the ticket it signed.
-- **Nothing to log.** No accounts, no questions on disk, no column that ties a ticket to a wallet.
-- **Verified by you.** Five enclave checks run in your browser before anything is sent.
-- **Zero third-party code** on the chat page, locked by its Content-Security-Policy.
-- **Money with no owner.** Five contracts split every dollar on fixed terms nobody can change.
-- **A price on breaking it.** The Leak Bounty pays up to half its vault for a ticket linked to a wallet.
+Blindwoods splits the two with blind signatures. Your wallet buys tickets. The tickets ask the questions. The server can check that a ticket was paid for, but it cannot tell which wallet paid, because it signed that ticket without being able to read it.
 
-## Highlights
+There is no account to watch. $BLIND holders get fresh tickets every day, paid for by trading fees.
 
-| Mechanic | Value |
-|---|---|
-| Ticket price | **$0.01** = one standard private message (1,000 tokens out) |
-| Packs (USDG) | 500 · 2,500 · 10,000 · 50,000 tickets |
-| Ticket life | 72 hours after its key; one issuer key per UTC day |
-| Draw size | Up to 200 blind tickets per draw |
-| Per request | 1 to 8 tickets; +1 per 2,000 tokens of conversation |
-| Pack split | 80% operations · 10% Compute Pool · 10% buyback and burn |
-| Creator fee split | 50% Compute Pool · 20% buyback and burn · 20% builders · 10% Leak Bounty |
-| Enclave checks | Release digest · signed and logged code · hardware report · measurements · bound key |
-| Leak Bounty | 50% link · 30% stored prompt · 10% third-party call · 5% other |
+> *Blind*: the tickets are signed blind, and the server is blind to who is asking. *Woods*: where nobody follows you.
 
-## How It Works
+---
+
+## Features
+
+### Two doors, one wall
 
 ```
    DOOR 1 · THE WALLET                          DOOR 2 · THE TICKET
@@ -63,33 +50,56 @@ Every private AI on a public chain asks you to connect a wallet, and that wallet
       N tickets live on YOUR device ───────► spent one at a time
 
             ## = the wall: no field, log or key crosses it
-
-   EVERY TRADE BUYS A PROMPT
-   $BLIND trade ─► 1% creator tax ─► FeeRouter ─► 50% Compute Pool ─► holders' daily tickets
-                                              ├─► 20% buyback and burn
-                                              ├─► 20% builders
-                                              └─► 10% Leak Bounty Vault
 ```
 
-## Repository Layout
+The page that asks questions loads no wallet code at all. The page that handles the wallet never sees a question.
 
-| Repository | What it contains |
+### Blind tickets
+
+| Feature | Detail |
 |---|---|
-| [**blindwoods-kernel**](documents/blindwoods-kernel) | `TicketMint` reference contract with Foundry tests, interfaces for `FeeRouter`, `ComputePool`, `BuybackBurner` and `BountyVault`, and the C4 container model in `SYSTEM_DESIGN.md` |
-| [**blindwoods-canon**](documents/blindwoods-canon) | `THESIS.md`, the full argument from the account problem to the ownerless contracts, and `THREAT_MODEL.md`, a STRIDE model with Web3 abuse patterns and the leak reporting process |
-| [**blindwoods-harness**](documents/blindwoods-harness) | `@blindwoods/harness`, a TypeScript SDK for agents that pay per call in tickets, plus `ENDPOINTS.md` covering every route and status code |
-| [**blindwoods-cabin**](documents/blindwoods-cabin) | The Next.js app shell: chat screen, IndexedDB ticket store, enclave check, strict CSP |
+| **Blind signing** | Your device blinds each ticket; the issuer signs without seeing it (blind RSA, RFC 9474, as Privacy Pass tokens) |
+| **Batch draws** | Up to **200** tickets per draw |
+| **Daily keys** | One issuer key per UTC day; a ticket lives **72 hours**, then its key and spent list are deleted |
+| **Kept on your device** | Tickets live in your browser, with no wallet field |
+| **Move between devices** | Export tickets as one line of text and import them on a phone or into an agent |
 
-### Marketing collateral
+### Tickets
 
-Outside this folder, in the project workspace:
-
-| Folder | Contents |
+| Tickets in a pack | Price (USDG) |
 |---|---|
-| `Caption/` | `CAPTION.md` (29 long-form captions) and `CAPTION-SHORT.md` (30 operator-log posts) |
-| `Article/` | `X-Article.md` (3 X Articles) |
+| 500 | $5 |
+| 2,500 | $25 |
+| 10,000 | $100 |
+| 50,000 | $500 |
 
-## Holder Tiers
+One price: **$0.01 a ticket** = one standard private message. A long conversation costs one more ticket per 2,000 tokens, never more than 8 on one request. Tickets the gate did not spend come back to you.
+
+### Verified in your browser
+
+Before the first question, your browser runs five checks on the enclave:
+
+| Check | Passes when |
+|---|---|
+| Published release | The enclave's code release is fetched with its digest |
+| Signed and logged code | The release is signed by its build and recorded in a public transparency log |
+| Hardware report | The report is signed by the processor vendor's keys |
+| Measurements match | What the hardware measured equals what the release declares |
+| Key bound to the enclave | The key your question is encrypted to is named inside that report |
+
+A failed or missing check is a failure, never a warning. Nothing is sent until all five pass.
+
+### Nothing watches the chat
+
+- Your question is **encrypted to the enclave** before it leaves your device; the gate only passes ciphertext along
+- The gate keeps **no request log, no body, no address**
+- **Zero third-party scripts**, locked by the page's Content-Security-Policy
+- Conversation history stays **in your browser**: export it or wipe it anytime
+- No email, no username, no avatar: there is no "you" on any screen
+
+### Holder allowance
+
+Holding $BLIND never buys privacy: a claimed ticket and a bought ticket are the same object. Holding buys **free tickets every day**.
 
 | Tier | Hold | Free tickets a day | Unlocks |
 |---|---|---|---|
@@ -98,85 +108,54 @@ Outside this folder, in the project workspace:
 | Grove | 1,000,000 $BLIND | up to 250 | Premium models (3 tickets a message) |
 | Old Growth | 10,000,000 $BLIND | up to 3,000 | Pictures, API tickets for agents, a model vote |
 
-Holding never buys privacy: a claimed ticket and a bought ticket are the same object. Balances are checked now and at two random blocks in the last 24 hours, and caps are super-linear, so splitting a bag never pays.
+Balances are checked now and at two random blocks in the last 24 hours. Caps are super-linear, so splitting a bag across wallets never earns more.
 
-## Token at a Glance
+### Money nobody can redirect
 
-| | |
+Five contracts on Robinhood Chain, none with an owner, none pausable or upgradeable.
+
+| Contract | Does |
 |---|---|
-| Ticker | **$BLIND** |
-| Chain | Robinhood Chain (chainId 4663) |
-| Launchpad | Pons, fair launch, USDG pair |
-| Supply | 1,000,000,000, fixed, no mint function |
-| Team allocation | None. No presale, no private round |
-| Dev buy | At most 2%, inside the launch transaction, 90-day linear vesting |
-| Creator tax | 1% on every trade, routed by the ownerless FeeRouter |
-| Contract address | Published on [blindwoods.app](https://blindwoods.app) and pinned on X at launch. Not before. |
+| **TicketMint** | Sells packs and splits every purchase in the same call: 80% operations, 10% Compute Pool, 10% buyback and burn |
+| **FeeRouter** | Launches $BLIND on Pons (USDG pair, 1% creator tax) and splits the fee 50% Compute Pool, 20% buyback and burn, 20% builders, 10% Leak Bounty |
+| **ComputePool** | Pays for holders' daily tickets, to one fixed payee, at most 1/30 of the pool per day |
+| **BuybackBurner** | Buys $BLIND and sends every token to the dead address |
+| **BountyVault** | Pays leak reports on two of three judges' approval |
 
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Contracts | Solidity 0.8.28, Foundry, Robinhood Chain |
-| Tickets | Privacy Pass type 2, blind RSA (RFC 9474, 9577, 9578) |
-| App | Next.js 16, React 19, viem, IndexedDB |
-| Issuer and gate | Node 22 route handlers, OpenSSL via `node:crypto`, AES-256-GCM wrapped keys |
-| Inference | Open-weight models in attested CPU and GPU enclaves, requests sealed with HPKE |
-| Ledger | Postgres with forced row-level security and a dedicated least-privilege role |
-| Runtime | Non-root containers (uid 1001), no published ports, TLS reverse proxy |
-
-## Roadmap
-
-| Phase | Window | Ships |
-|---|---|---|
-| **1 · MVP** | days 1 to 10 | Ownerless contracts, issuer, gate, standard enclave model, browser attestation, USDG packs, meter, launch receipt |
-| **2 · Growth** | weeks 2 to 6 | Oblivious HTTP relay, pictures, seed links, the Forest, live Leak Bounty, agent API quick start |
-| **3 · Upgrade** | months 2 to 4 | Own enclave nodes, reproducible builds, zero-knowledge holding proofs, split issuer key |
-| **4 · Ecosystem** | months 4 to 12 | Partner apps accept tickets, self-funding agents, mobile app, models by holder vote |
-
-## Quick Start
-
-Each part lives in its own repository.
-
-```bash
-# contracts
-git clone https://github.com/blindwoodsRH/blindwoods-kernel.git
-cd blindwoods-kernel/contracts && forge install foundry-rs/forge-std --no-git && forge test && cd ../..
-
-# agent SDK
-git clone https://github.com/blindwoodsRH/blindwoods-harness.git
-cd blindwoods-harness && npm install && BLINDWOODS_TICKETS='bwt1.…' npm run example && cd ..
-
-# app
-git clone https://github.com/blindwoodsRH/blindwoods-cabin.git
-cd blindwoods-cabin && npm install && npm run dev
+```
+$BLIND trade ─► 1% creator tax ─► FeeRouter ─► 50% Compute Pool ─► holders' daily tickets
+                                           ├─► 20% buyback and burn
+                                           ├─► 20% builders
+                                           └─► 10% Leak Bounty Vault
 ```
 
-The thesis and threat model: [github.com/blindwoodsRH/blindwoods-canon](https://github.com/blindwoodsRH/blindwoods-canon).
+### Leak Bounty
 
-## ⚠️ Scam Warning
-
-- **$BLIND has not launched until the official account says so.** Any token using the name before then is not ours.
-- **There is no presale, no private round, no whitelist and no allocation.** Anyone offering one is a scammer.
-- **The team will never DM you first.** Anything a stranger sends you about Blindwoods is a scam.
-- **Blindwoods never asks for a seed phrase or a private key.** Signing in is a message signature with no transaction.
-- **Trust only the official channels:** [blindwoods.app](https://blindwoods.app), [app.blindwoods.app](https://app.blindwoods.app), [@blindwoodsRH](https://x.com/blindwoodsRH) and [github.com/blindwoodsRH](https://github.com/blindwoodsRH). The contract address appears there and nowhere else first.
-
-## Reference Links
-
-| Resource | Link |
+| Finding | Share of the vault |
 |---|---|
-| Website, meter, launch receipt | [blindwoods.app](https://blindwoods.app) |
-| App | [app.blindwoods.app](https://app.blindwoods.app) |
-| Docs and threat model | [blindwoods.app/docs](https://blindwoods.app/docs) |
-| X | [@blindwoodsRH](https://x.com/blindwoodsRH) |
-| GitHub | [github.com/blindwoodsRH](https://github.com/blindwoodsRH) |
-| RFC 9474, blind RSA | [rfc-editor.org/rfc/rfc9474](https://www.rfc-editor.org/rfc/rfc9474) |
-| RFC 9577, Privacy Pass HTTP auth | [rfc-editor.org/rfc/rfc9577](https://www.rfc-editor.org/rfc/rfc9577) |
-| RFC 9578, Privacy Pass issuance | [rfc-editor.org/rfc/rfc9578](https://www.rfc-editor.org/rfc/rfc9578) |
+| Link a ticket to a wallet | 50% |
+| Find a stored prompt or answer | 30% |
+| Catch a third-party script or call | 10% |
+| Any other privacy defect | 5% |
+
+### The meter
+
+A public page shows hourly totals and contract balances, each linked to its source on chain: tickets spent, burns, the bounty vault, and the count that matters most, **tickets that named a wallet: 0**.
+
+### For agents
+
+The same gate serves scripts and agents: tickets in the `Authorization: PrivateToken` header, the familiar chat-completions body, no API key and no account.
+
+### On the way
+
+| Phase | Adds |
+|---|---|
+| 2 | Oblivious HTTP relay (the gate never sees an IP), pictures, seed links, the Forest, agent quick start |
+| 3 | Own enclave nodes, reproducible builds, zero-knowledge holding proofs, split issuer key |
+| 4 | Partner apps that accept tickets, self-funding agents, a mobile app |
 
 ---
 
 <div align="center">
-<sub>Blindwoods is a community project. It is not affiliated with Robinhood Markets, any brokerage, the launchpad, any model provider or any hardware vendor. Nothing here is investment advice. $BLIND gives access to tickets and features inside the product, nothing more, and can lose all of its value. Blind tickets protect the link between a payment and a question; they cannot protect what you type, your device, or a network you do not control.</sub>
+<sub>Blindwoods is a community project, not affiliated with Robinhood Markets, any brokerage, the launchpad, any model provider or any hardware vendor. Nothing here is investment advice. $BLIND gives access to tickets and features inside the product, nothing more, and can lose all of its value. There is no presale and the team never DMs first; the contract address appears on blindwoods.app and @blindwoodsRH only. Blind tickets cannot protect what you type, your device, or a network you do not control.</sub>
 </div>
